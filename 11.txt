@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Name Validation</title>
+</head>
+<body onload="pageLoad()">
+
+<h3>Enter Student Name:</h3>
+<input type="text" id="name" onblur="checkName()">
+
+<br><br>
+<img id="img" src="https://via.placeholder.com/100"
+     onmouseover="increaseSize()"
+     onclick="decreaseSize()"
+     onmouseup="normalSize()">
+
+<script>
+function pageLoad(){
+    alert("Page Loaded");
+}
+
+function checkName(){
+    let name = document.getElementById("name").value;
+
+    if(name != ""){
+        document.getElementById("name").style.color = "red";
+        document.getElementById("name").style.fontSize = "18px";
+    } else {
+        alert("Name is empty! Click on image.");
+    }
+}
+
+function increaseSize(){
+    document.getElementById("img").style.width = "200px";
+}
+
+function decreaseSize(){
+    document.getElementById("img").style.width = "50px";
+}
+
+function normalSize(){
+    document.getElementById("img").style.width = "100px";
+}
+</script>
+
+</body>
+</html>
+
+
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Given dataset
+dataset = [
+    ['butter', 'bread', 'milk'],
+    ['butter', 'flour', 'milk', 'sugar'],
+    ['butter', 'eggs', 'milk', 'salt'],
+    ['eggs'],
+    ['butter', 'flour', 'milk', 'salt']
+]
+
+# Convert categorical to numeric
+te = TransactionEncoder()
+te_data = te.fit(dataset).transform(dataset)
+df = pd.DataFrame(te_data, columns=te.columns_)
+
+print("Encoded Dataset:\n", df)
+
+# Apriori with min_support = 0.6
+freq1 = apriori(df, min_support=0.6, use_colnames=True)
+rules1 = association_rules(freq1, metric="confidence", min_threshold=0.7)
+
+print("\nFrequent Itemsets (min_sup=0.6):\n", freq1)
+print("\nAssociation Rules:\n", rules1)
+
+# Apriori with min_support = 0.4
+freq2 = apriori(df, min_support=0.4, use_colnames=True)
+rules2 = association_rules(freq2, metric="confidence", min_threshold=0.7)
+
+print("\nFrequent Itemsets (min_sup=0.4):\n", freq2)
+print("\nAssociation Rules:\n", rules2)

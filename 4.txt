@@ -1,0 +1,88 @@
+<?php
+session_start();
+
+$page = isset($_GET['page']) ? $_GET['page'] : 'page1';
+
+if(isset($_POST['next1'])){
+    $_SESSION['eno'] = $_POST['eno'];
+    $_SESSION['ename'] = $_POST['ename'];
+    $_SESSION['address'] = $_POST['address'];
+    header("Location:?page=page2");
+}
+
+if(isset($_POST['next2'])){
+    $_SESSION['basic'] = $_POST['basic'];
+    $_SESSION['da'] = $_POST['da'];
+    $_SESSION['hra'] = $_POST['hra'];
+    header("Location:?page=page3");
+}
+
+if($page == 'page1'){
+?>
+<form method="post">
+    Eno: <input type="text" name="eno"><br><br>
+    Ename: <input type="text" name="ename"><br><br>
+    Address: <input type="text" name="address"><br><br>
+    <input type="submit" name="next1" value="Next">
+</form>
+<?php
+}
+
+elseif($page == 'page2'){
+?>
+<form method="post">
+    Basic: <input type="text" name="basic"><br><br>
+    DA: <input type="text" name="da"><br><br>
+    HRA: <input type="text" name="hra"><br><br>
+    <input type="submit" name="next2" value="Next">
+</form>
+<?php
+}
+
+elseif($page == 'page3'){
+    $total = $_SESSION['basic'] + $_SESSION['da'] + $_SESSION['hra'];
+?>
+<h3>Employee Information</h3>
+Eno: <?php echo $_SESSION['eno']; ?><br>
+Ename: <?php echo $_SESSION['ename']; ?><br>
+Address: <?php echo $_SESSION['address']; ?><br>
+Basic: <?php echo $_SESSION['basic']; ?><br>
+DA: <?php echo $_SESSION['da']; ?><br>
+HRA: <?php echo $_SESSION['hra']; ?><br>
+Total: <?php echo $total; ?><br>
+<?php
+}
+?>
+
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Sample Fish dataset
+data = {
+    'Length': [23.2, 24.0, 23.9, 26.3, 26.5, 29.0, 29.0, 29.7],
+    'Weight': [242, 290, 340, 363, 430, 450, 500, 390]
+}
+
+df = pd.DataFrame(data)
+
+# Independent and target variables
+X = df[['Length']]
+y = df['Weight']
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Build Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+print("X_test:\n", X_test)
+print("\nPredicted Weights:\n", y_pred)
+

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration</title>
+    <script>
+        function showMessage(){
+            alert("Hello Good Morning");
+        }
+    </script>
+</head>
+
+<body onload="showMessage()">
+
+<h2>Student Registration Form</h2>
+
+<form>
+    Name: <input type="text"><br><br>
+    Email: <input type="email"><br><br>
+    Mobile: <input type="text"><br><br>
+    Address: <textarea></textarea><br><br>
+    Course: 
+    <select>
+        <option>BSc</option>
+        <option>BCA</option>
+        <option>BCom</option>
+    </select><br><br>
+    <input type="submit" value="Register">
+</form>
+
+</body>
+</html>
+
+
+
+import re
+import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Given text
+text = """So, keep working. Keep striving. Never give up. Fall down seven times, get up eight. 
+Ease is a greater threat to progress than hardship. Ease is a greater threat to progress than hardship. 
+So, keep moving, keep growing, keep learning. See you at work."""
+
+# Preprocessing (remove special characters and digits)
+clean_text = re.sub(r'[^a-zA-Z\s.]', '', text)
+
+# Sentence tokenization
+sentences = [s.strip() for s in clean_text.split('.') if s.strip() != ""]
+
+# Vectorization
+vectorizer = CountVectorizer().fit_transform(sentences)
+vectors = vectorizer.toarray()
+
+# Sentence scoring
+scores = vectors.sum(axis=1)
+
+# Select top 2 sentences
+top_idx = np.argsort(scores)[-2:]
+
+# Generate summary
+summary = " ".join([sentences[i] for i in top_idx])
+
+print("Clean Text:\n", clean_text)
+print("\nSummary:\n", summary)

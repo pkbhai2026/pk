@@ -1,0 +1,51 @@
+Q.1)WriteaPHPscripttokeeptrackofnumberoftimesthewebpagehasbeenaccessed(Use
+Session
+Tracking).
+Ans:
+<?php
+session_start();
+
+if (isset($_SESSION['count'])) {
+    $_SESSION['count']++;
+} else {
+    $_SESSION['count'] = 1;
+}
+
+echo $_SESSION['count'];
+?>
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Create Position_Salaries dataset
+data = {
+    'Level': [1,2,3,4,5,6,7,8,9,10],
+    'Salary': [45000,50000,60000,80000,110000,150000,200000,300000,500000,1000000]
+}
+
+df = pd.DataFrame(data)
+
+# Independent and dependent variables
+X = df[['Level']]
+y = df['Salary']
+
+# Split dataset into 70% training and 30% testing
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Print splits
+print("X_train:\n", X_train)
+print("\nX_test:\n", X_test)
+print("\ny_train:\n", y_train)
+print("\ny_test:\n", y_test)
+
+# Build Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+print("\nPredictions:\n", y_pred)

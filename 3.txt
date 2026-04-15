@@ -1,0 +1,78 @@
+<?php
+session_start();
+
+$correct_user = "admin";
+$correct_pass = "1234";
+
+if(!isset($_SESSION['attempts'])){
+    $_SESSION['attempts'] = 0;
+}
+
+if(isset($_POST['login'])){
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+
+    if($user == $correct_user && $pass == $correct_pass){
+        $_SESSION['login_success'] = true;
+    } else {
+        $_SESSION['attempts']++;
+        echo "Invalid Login! Attempts left: " . (3 - $_SESSION['attempts']) . "<br>";
+    }
+}
+
+if(isset($_SESSION['login_success']) && $_SESSION['login_success'] == true){
+?>
+    <h2>Welcome!</h2>
+    <form>
+        Enter Something: <input type="text"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+<?php
+} else {
+    if($_SESSION['attempts'] < 3){
+?>
+        <form method="post">
+            Username: <input type="text" name="username"><br><br>
+            Password: <input type="password" name="password"><br><br>
+            <input type="submit" name="login" value="Login">
+        </form>
+<?php
+    } else {
+        echo "You have exceeded maximum login attempts!";
+    }
+}
+?>
+
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+
+# Create User dataset
+data = {
+    'User ID': [1,2,3,4,5,6,7,8,9,10],
+    'Gender': [0,1,0,1,0,1,0,1,0,1],  # 0=Female, 1=Male
+    'Age': [19,35,26,27,19,27,32,25,30,40],
+    'EstimatedSalary': [19000,20000,43000,57000,76000,58000,150000,33000,80000,90000],
+    'Purchased': [0,0,0,1,0,1,1,0,1,1]
+}
+
+df = pd.DataFrame(data)
+
+# Independent and target variables
+X = df[['Gender','Age','EstimatedSalary']]
+y = df['Purchased']
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Build Logistic Regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+print("Predictions:\n", y_pred)

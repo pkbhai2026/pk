@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+    <item>
+        <item_name>Pen</item_name>
+        <item_rate>10</item_rate>
+        <item_quantity>50</item_quantity>
+    </item>
+
+    <item>
+        <item_name>Notebook</item_name>
+        <item_rate>40</item_rate>
+        <item_quantity>30</item_quantity>
+    </item>
+
+    <item>
+        <item_name>Pencil</item_name>
+        <item_rate>5</item_rate>
+        <item_quantity>100</item_quantity>
+    </item>
+
+    <item>
+        <item_name>Eraser</item_name>
+        <item_rate>3</item_rate>
+        <item_quantity>80</item_quantity>
+    </item>
+
+    <item>
+        <item_name>Sharpener</item_name>
+        <item_rate>7</item_rate>
+        <item_quantity>60</item_quantity>
+    </item>
+</items>
+
+
+
+
+
+
+import pandas as pd
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Load iris dataset
+iris = datasets.load_iris()
+
+df = pd.DataFrame(iris.data, columns=iris.feature_names)
+df['species'] = iris.target
+
+# Map numeric target to names
+df['species'] = df['species'].map({0:'Iris-setosa', 1:'Iris-versicolor', 2:'Iris-virginica'})
+
+# Statistical details
+print("Statistical Details:\n")
+print(df.groupby('species').describe())
+
+# Features and target
+X = iris.data
+y = iris.target
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Logistic Regression model
+model = LogisticRegression(max_iter=200)
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print("\nModel Accuracy:", accuracy)

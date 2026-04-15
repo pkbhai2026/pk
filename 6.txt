@@ -1,0 +1,47 @@
+<?php
+$xml = simplexml_load_file("book.xml");
+
+foreach($xml->book as $book){
+    echo "Category: " . $book['category'] . "<br>";
+    echo "Title: " . $book->title . "<br>";
+    echo "Author: " . $book->author . "<br>";
+    echo "Year: " . $book->year . "<br>";
+    echo "Price: " . $book->price . "<br><br>";
+}
+?>
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Dataset (transactions)
+dataset = [
+    ['Milk', 'Bread', 'Butter'],
+    ['Beer', 'Bread'],
+    ['Milk', 'Bread', 'Butter'],
+    ['Beer', 'Butter'],
+    ['Milk', 'Bread'],
+    ['Milk', 'Butter']
+]
+
+# Convert categorical data into numeric format
+te = TransactionEncoder()
+te_data = te.fit(dataset).transform(dataset)
+df = pd.DataFrame(te_data, columns=te.columns_)
+
+print("Encoded Dataset:\n", df)
+
+# Apriori with min_support = 0.5
+freq_items1 = apriori(df, min_support=0.5, use_colnames=True)
+rules1 = association_rules(freq_items1, metric="confidence", min_threshold=0.7)
+
+print("\nFrequent Itemsets (min_sup=0.5):\n", freq_items1)
+print("\nAssociation Rules:\n", rules1)
+
+# Apriori with min_support = 0.3
+freq_items2 = apriori(df, min_support=0.3, use_colnames=True)
+rules2 = association_rules(freq_items2, metric="confidence", min_threshold=0.7)
+
+print("\nFrequent Itemsets (min_sup=0.3):\n", freq_items2)
+print("\nAssociation Rules:\n", rules2)
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery before() and after()</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<p id="para">This is a paragraph.</p>
+
+<button onclick="addText()">Insert Text</button>
+
+<script>
+function addText(){
+    $("#para").before("<p>Text added BEFORE paragraph</p>");
+    $("#para").after("<p>Text added AFTER paragraph</p>");
+}
+</script>
+
+</body>
+</html>
+
+
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Given dataset
+dataset = [
+    ['eggs', 'milk', 'bread'],
+    ['eggs', 'apple'],
+    ['milk', 'bread'],
+    ['apple', 'milk'],
+    ['milk', 'apple', 'bread']
+]
+
+# Convert categorical to numeric
+te = TransactionEncoder()
+te_data = te.fit(dataset).transform(dataset)
+df = pd.DataFrame(te_data, columns=te.columns_)
+
+print("Encoded Dataset:\n", df)
+
+# Apriori with min_support = 0.6
+freq1 = apriori(df, min_support=0.6, use_colnames=True)
+rules1 = association_rules(freq1, metric="confidence", min_threshold=0.7)
+
+print("\nFrequent Itemsets (min_sup=0.6):\n", freq1)
+print("\nAssociation Rules:\n", rules1)
+
+# Apriori with min_support = 0.4
+freq2 = apriori(df, min_support=0.4, use_colnames=True)
+rules2 = association_rules(freq2, metric="confidence", min_threshold=0.7)
+
+print("\nFrequent Itemsets (min_sup=0.4):\n", freq2)
+print("\nAssociation Rules:\n", rules2)

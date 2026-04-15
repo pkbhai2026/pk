@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AJAX Name Check</title>
+    <script>
+        function showHint(str){
+            if(str.length == 0){
+                document.getElementById("msg").innerHTML = "Stranger, please tell me your name!";
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "server.php?q=" + str, true);
+
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    document.getElementById("msg").innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+
+Enter Name: <input type="text" onkeyup="showHint(this.value)">
+<p id="msg"></p>
+
+</body>
+</html>
+
+
+<?php
+$name = $_GET['q'];
+
+$known = ["Rohit","Virat","Dhoni","Ashwin","Harbhajan"];
+
+if($name == ""){
+    echo "Stranger, please tell me your name!";
+}
+elseif(in_array($name, $known)){
+    echo "Hello, master !";
+}
+else{
+    echo $name . ", I don't know you!";
+}
+?>
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Load dataset (nursery.csv)
+df = pd.read_csv("nursery.csv")
+
+print("Dataset Info:\n")
+print(df.info())
+print("\nFirst 5 rows:\n", df.head())
+
+# Convert categorical to numeric
+df = pd.get_dummies(df)
+
+# Independent and target variable
+X = df.iloc[:, :-1]
+y = df.iloc[:, -1]
+
+# Split dataset (70:30)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+print("\nX_train:\n", X_train)
+print("\nX_test:\n", X_test)
+print("\ny_train:\n", y_train)
+print("\ny_test:\n", y_test)
+
+# Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+print("\nPredictions:\n", y_pred)
+
+
+

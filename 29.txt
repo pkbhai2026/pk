@@ -1,0 +1,86 @@
+<?php
+$result = "";
+$fib = "";
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $num = $_POST['num'];
+
+    // Sum of digits
+    $sum = 0;
+    $temp = $num;
+    while($temp > 0){
+        $sum += $temp % 10;
+        $temp = (int)($temp / 10);
+    }
+
+    // Fibonacci series
+    $a = 0;
+    $b = 1;
+    $fib = $a . " " . $b;
+
+    for($i = 2; $i < $num; $i++){
+        $c = $a + $b;
+        $fib .= " " . $c;
+        $a = $b;
+        $b = $c;
+    }
+
+    $result = "Sum of digits: " . $sum;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHP Self Processing</title>
+</head>
+<body>
+
+<form method="post">
+    Enter Number: <input type="number" name="num" required>
+    <input type="submit" value="Submit">
+</form>
+
+<?php
+if($result != ""){
+    echo "<h3>Fibonacci Series:</h3> " . $fib;
+    echo "<br><br>" . $result;
+}
+?>
+
+</body>
+</html>
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+
+# Sample dataset
+data = {
+    'StudyHours': [1,2,3,4,5,6,7,8],
+    'Pass': [0,0,0,1,1,1,1,1]
+}
+
+df = pd.DataFrame(data)
+
+# Independent and target variables
+X = df[['StudyHours']]
+y = df['Pass']
+
+# Split dataset (70:30)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+print("X_train:\n", X_train)
+print("\nX_test:\n", X_test)
+print("\ny_train:\n", y_train)
+print("\ny_test:\n", y_test)
+
+# Logistic Regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+print("\nPredictions:\n", y_pred)

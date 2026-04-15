@@ -1,0 +1,81 @@
+<?php
+if(isset($_POST['save'])){
+    setcookie("font_style", $_POST['font_style'], time()+3600);
+    setcookie("font_size", $_POST['font_size'], time()+3600);
+    setcookie("font_color", $_POST['font_color'], time()+3600);
+    setcookie("bg_color", $_POST['bg_color'], time()+3600);
+    header("Location:?page=display");
+}
+
+$page = isset($_GET['page']) ? $_GET['page'] : 'form';
+
+if($page == 'form'){
+?>
+<form method="post">
+    Font Style: <input type="text" name="font_style"><br><br>
+    Font Size: <input type="text" name="font_size"><br><br>
+    Font Color: <input type="color" name="font_color"><br><br>
+    Background Color: <input type="color" name="bg_color"><br><br>
+    <input type="submit" name="save" value="Save">
+</form>
+
+<?php
+}
+elseif($page == 'display'){
+    echo "Font Style: ".$_COOKIE['font_style']."<br>";
+    echo "Font Size: ".$_COOKIE['font_size']."<br>";
+    echo "Font Color: ".$_COOKIE['font_color']."<br>";
+    echo "Background Color: ".$_COOKIE['bg_color']."<br><br>";
+    echo "<a href='?page=apply'>Apply Settings</a>";
+}
+elseif($page == 'apply'){
+    $style = "font-family:".$_COOKIE['font_style'].
+             "; font-size:".$_COOKIE['font_size']."px".
+             "; color:".$_COOKIE['font_color'].
+             "; background-color:".$_COOKIE['bg_color'].";";
+?>
+<div style="<?php echo $style; ?>">
+    This is the page with applied settings
+</div>
+<?php
+}
+?>
+
+
+
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Create Salary dataset
+data = {
+    'Salary': [15000,20000,25000,30000,35000,40000,45000,50000],
+    'Purchase': [0,0,0,1,1,1,1,1]
+}
+
+df = pd.DataFrame(data)
+
+# Independent and target variables
+X = df[['Salary']]
+y = df['Purchase']
+
+# Split into training and testing sets (70:30)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Print datasets
+print("X_train:\n", X_train)
+print("\nX_test:\n", X_test)
+print("\ny_train:\n", y_train)
+print("\ny_test:\n", y_test)
+
+# Build Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predictions
+y_pred = model.predict(X_test)
+
+print("\nPredictions:\n", y_pred)

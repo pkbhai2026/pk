@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fibonacci</title>
+    <script>
+        function generateFibonacci(){
+            let n = prompt("Enter number of terms:");
+            n = parseInt(n);
+
+            let a = 0, b = 1, c;
+            let result = a + " " + b;
+
+            for(let i = 2; i < n; i++){
+                c = a + b;
+                result += " " + c;
+                a = b;
+                b = c;
+            }
+
+            document.getElementById("output").innerHTML = result;
+        }
+    </script>
+</head>
+<body>
+
+<button onclick="generateFibonacci()">Generate Fibonacci</button>
+<p id="output"></p>
+
+</body>
+</html>
+
+
+import nltk
+import re
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+from collections import Counter
+
+# Download required resources (run once)
+# nltk.download('punkt')
+# nltk.download('stopwords')
+
+# Sample paragraph
+text = """Machine learning is amazing. It allows computers to learn from data.
+It is widely used in many applications like recommendation systems and AI."""
+
+# Remove special characters
+clean_text = re.sub(r'[^a-zA-Z\s]', '', text)
+
+# Tokenization
+words = word_tokenize(clean_text.lower())
+sentences = sent_tokenize(text)
+
+# Remove stopwords
+stop_words = set(stopwords.words('english'))
+filtered_words = [w for w in words if w not in stop_words]
+
+# Frequency distribution
+freq_dist = Counter(filtered_words)
+
+print("Words:\n", filtered_words)
+print("\nSentences:\n", sentences)
+print("\nWord Frequency:\n", freq_dist)
+
+# Plot frequencies
+plt.bar(freq_dist.keys(), freq_dist.values())
+plt.xticks(rotation=45)
+plt.title("Word Frequency")
+plt.show()
+
+# WordCloud
+wc = WordCloud(width=800, height=400).generate(" ".join(filtered_words))
+
+plt.imshow(wc)
+plt.axis("off")
+plt.title("Word Cloud")
+plt.show()

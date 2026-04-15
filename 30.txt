@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bookstore>
+
+    <Yoga>
+        <Book>
+            <Book_Title>Yoga for Beginners</Book_Title>
+            <Book_Author>Ram Dev</Book_Author>
+            <Book_Price>300</Book_Price>
+        </Book>
+        <Book>
+            <Book_Title>Advanced Yoga</Book_Title>
+            <Book_Author>Anand Sharma</Book_Author>
+            <Book_Price>450</Book_Price>
+        </Book>
+    </Yoga>
+
+    <Story>
+        <Book>
+            <Book_Title>Alchemist</Book_Title>
+            <Book_Author>Paulo Coelho</Book_Author>
+            <Book_Price>350</Book_Price>
+        </Book>
+        <Book>
+            <Book_Title>Harry Potter</Book_Title>
+            <Book_Author>J.K. Rowling</Book_Author>
+            <Book_Price>500</Book_Price>
+        </Book>
+    </Story>
+
+    <Technical>
+        <Book>
+            <Book_Title>Learn Python</Book_Title>
+            <Book_Author>Guido</Book_Author>
+            <Book_Price>600</Book_Price>
+        </Book>
+        <Book>
+            <Book_Title>Java Programming</Book_Title>
+            <Book_Author>James Gosling</Book_Author>
+            <Book_Price>550</Book_Price>
+        </Book>
+    </Technical>
+
+</Bookstore>
+
+
+
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Given dataset
+transactions = [
+    ['eggs', 'milk', 'bread'],
+    ['eggs', 'apple'],
+    ['milk', 'bread'],
+    ['apple', 'milk'],
+    ['milk', 'apple', 'bread']
+]
+
+# Convert categorical to numeric
+te = TransactionEncoder()
+te_data = te.fit(transactions).transform(transactions)
+df = pd.DataFrame(te_data, columns=te.columns_)
+
+print("Encoded Dataset:\n", df)
+
+# Apply Apriori
+freq_items = apriori(df, min_support=0.4, use_colnames=True)
+
+# Generate association rules
+rules = association_rules(freq_items, metric="confidence", min_threshold=0.6)
+
+print("\nFrequent Itemsets:\n", freq_items)
+print("\nAssociation Rules:\n", rules)

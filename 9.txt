@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Membership Form</title>
+    <script>
+        function validateForm() {
+            let username = document.forms["myForm"]["username"].value;
+            let password = document.forms["myForm"]["password"].value;
+
+            if (username == "" || password == "") {
+                alert("Username and Password cannot be empty");
+                return false;
+            }
+
+            if (username.length < 5) {
+                alert("Username must be at least 5 characters long");
+                return false;
+            }
+
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long");
+                return false;
+            }
+
+            alert("Login Successful");
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+<form name="myForm" onsubmit="return validateForm()">
+    Username: <input type="text" name="username"><br><br>
+    Password: <input type="password" name="password"><br><br>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
+
+
+
+
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Custom transaction dataset
+dataset = [
+    ['Milk', 'Bread', 'Butter'],
+    ['Bread', 'Butter'],
+    ['Milk', 'Bread'],
+    ['Milk', 'Butter'],
+    ['Bread', 'Eggs'],
+    ['Milk', 'Eggs'],
+    ['Bread', 'Butter', 'Eggs']
+]
+
+# Convert categorical to numeric
+te = TransactionEncoder()
+te_data = te.fit(dataset).transform(dataset)
+df = pd.DataFrame(te_data, columns=te.columns_)
+
+print("Encoded Dataset:\n", df)
+
+# Apply Apriori
+freq_items = apriori(df, min_support=0.3, use_colnames=True)
+
+# Association rules
+rules = association_rules(freq_items, metric="confidence", min_threshold=0.6)
+
+print("\nFrequent Itemsets:\n", freq_items)
+print("\nAssociation Rules:\n", rules)
