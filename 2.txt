@@ -1,47 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Preferences</title>
+</head>
+<body>
+    <h1>Change Preferences</h1>
+
+    <form action="secondpage.php" method="post">
+        
+        <label for="fontstyle">Font Style:</label>
+        <select name="fontstyle" id="fontstyle">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        <br><br>
+
+        <label for="fontsize">Font Size:</label>
+        <select name="fontsize" id="fontsize">
+            <option value="12">12</option>
+            <option value="14">14</option>
+            <option value="16">16</option>
+        </select>
+        <br><br>
+
+        <label for="fontcolor">Font Color:</label>
+        <input type="color" name="fontcolor" id="fontcolor">
+        <br><br>
+
+        <label for="bgcolor">Background Color:</label>
+        <input type="color" name="bgcolor" id="bgcolor">
+        <br><br>
+
+        <input type="submit" name="submit" value="Save">
+    </form>
+</body>
+</html>
+
+
 <?php
-if(isset($_POST['save'])){
-    setcookie("font_style", $_POST['font_style'], time()+3600);
-    setcookie("font_size", $_POST['font_size'], time()+3600);
-    setcookie("font_color", $_POST['font_color'], time()+3600);
-    setcookie("bg_color", $_POST['bg_color'], time()+3600);
-    header("Location:?page=display");
+if (isset($_POST['submit'])) {
+
+    $fontstyle = $_POST['fontstyle'];
+    $fontsize  = $_POST['fontsize'];
+    $fontcolor = $_POST['fontcolor'];
+    $bgcolor   = $_POST['bgcolor'];
+
+    // Set cookies (valid for 1 day)
+    setcookie('fontstyle', $fontstyle, time() + 86400);
+    setcookie('fontsize', $fontsize, time() + 86400);
+    setcookie('fontcolor', $fontcolor, time() + 86400);
+    setcookie('bgcolor', $bgcolor, time() + 86400);
+
+    // Redirect to third page
+    header("Location: thirdpage.php");
+    exit();
 }
-
-$page = isset($_GET['page']) ? $_GET['page'] : 'form';
-
-if($page == 'form'){
 ?>
-<form method="post">
-    Font Style: <input type="text" name="font_style"><br><br>
-    Font Size: <input type="text" name="font_size"><br><br>
-    Font Color: <input type="color" name="font_color"><br><br>
-    Background Color: <input type="color" name="bg_color"><br><br>
-    <input type="submit" name="save" value="Save">
-</form>
 
 <?php
-}
-elseif($page == 'display'){
-    echo "Font Style: ".$_COOKIE['font_style']."<br>";
-    echo "Font Size: ".$_COOKIE['font_size']."<br>";
-    echo "Font Color: ".$_COOKIE['font_color']."<br>";
-    echo "Background Color: ".$_COOKIE['bg_color']."<br><br>";
-    echo "<a href='?page=apply'>Apply Settings</a>";
-}
-elseif($page == 'apply'){
-    $style = "font-family:".$_COOKIE['font_style'].
-             "; font-size:".$_COOKIE['font_size']."px".
-             "; color:".$_COOKIE['font_color'].
-             "; background-color:".$_COOKIE['bg_color'].";";
-?>
-<div style="<?php echo $style; ?>">
-    This is the page with applied settings
-</div>
-<?php
-}
+// Get cookie values or set defaults
+$fontstyle = isset($_COOKIE['fontstyle']) ? $_COOKIE['fontstyle'] : 'Arial';
+$fontsize  = isset($_COOKIE['fontsize']) ? $_COOKIE['fontsize'] : '12';
+$fontcolor = isset($_COOKIE['fontcolor']) ? $_COOKIE['fontcolor'] : '#000000';
+$bgcolor   = isset($_COOKIE['bgcolor']) ? $_COOKIE['bgcolor'] : '#FFFFFF';
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page with New Settings</title>
 
+    <style>
+        body {
+            font-family: <?php echo $fontstyle; ?>;
+            font-size: <?php echo $fontsize; ?>px;
+            color: <?php echo $fontcolor; ?>;
+            background-color: <?php echo $bgcolor; ?>;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Page with New Settings</h1>
+
+    <p>
+        This page uses your saved preferences.<br>
+        Font Style: <?php echo $fontstyle; ?><br>
+        Font Size: <?php echo $fontsize; ?>px<br>
+        Font Color: <?php echo $fontcolor; ?><br>
+        Background Color: <?php echo $bgcolor; ?>
+    </p>
+
+</body>
+</html>
 
 
 
